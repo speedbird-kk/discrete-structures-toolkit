@@ -31,7 +31,11 @@ public final class Ordering<A> implements Relational<A, A> {
         );
 
         // Transitive closure to be added
-        relationSet = Set.copyOf(RelationUtilities.reflexiveClosure(coveringRelation));
+        relationSet = Set.copyOf(
+            RelationUtilities.reflexiveClosure(
+                RelationUtilities.transitiveClosure(coveringRelation, domain), domain
+            )
+        );
 
         comparator = Optional.empty();
     }

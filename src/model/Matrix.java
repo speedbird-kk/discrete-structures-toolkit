@@ -83,6 +83,26 @@ public final class Matrix {
         this(m, n, entries, new ArrayList<>(), new ArrayList<>());
     }
 
+    public int[][] entries() {
+        return entries;
+    }
+
+    public int rows() {
+        return m;
+    }
+
+    public int columns() {
+        return n;
+    }
+
+    public List<String> rowLabels() {
+        return rowLabels;
+    }
+
+    public List<String> columnLabels() {
+        return columnLabels;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

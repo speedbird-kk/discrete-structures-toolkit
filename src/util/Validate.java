@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
+import model.Matrix;
 import model.Relation;
 
 public final class Validate {
@@ -40,7 +41,7 @@ public final class Validate {
             .allMatch(set::contains);
     }
 
-    public static <A> boolean matrix(int[][] entries) {
+    public static boolean matrix(int[][] entries) {
         if (entries.length < 1) {
             return false;
         }
@@ -54,5 +55,9 @@ public final class Validate {
         }
 
         return true;
+    }
+
+    public static boolean squareMatrix(Matrix matrix) {
+        return matrix.rows() == matrix.columns();
     }
 }
