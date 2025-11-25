@@ -1,14 +1,20 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import exceptions.InvalidComparatorException;
 import util.Pair;
 import util.RelationUtilities;
+import util.Validate;
 
 public final class Ordering<A> implements Relational<A, A> {
     private Set<A> domain;
@@ -38,6 +44,37 @@ public final class Ordering<A> implements Relational<A, A> {
         );
 
         comparator = Optional.empty();
+    }
+
+    public Ordering(Set<A> domain, Comparator<A> comparator) {
+        this.domain = Set.copyOf(domain);
+        this.comparator = Optional.of(comparator);
+
+        List<A> sorted = new ArrayList<>(domain)
+        sorted.sort(comparator);
+
+        if (!Validate.comparator(sorted, comparator)) {
+            throw new InvalidComparatorException("Comparator must be consistent with a linear ordering");
+        }
+
+        Set<Pair<A, A>> covers = new HashSet<>();
+
+        for (int i = 0; i < sorted.size() - 1; i++) {
+            covers.add(new Pair<>(sorted.get(i), sorted.get(i + 1)));
+        }
+
+        coveringRelation = Set.copyOf(covers);
+
+        relationSet = RelationUtilities.reflexiveClosure(
+            RelationUtilities.transitiveClosure(coveringRelation, this.domain), this.domain);
+    }
+
+    public static <A> Ordering<A> fromHasse(Map<A, Set<A>> hasse) {
+        return new Ordering<>(hasse);
+    }
+
+    public static <A> Ordering<A> fromComparator(Set<A> domain, Comparator<A> comparator) {
+        return new Ordering<>(domain, comparator);
     }
 
     public Set<A> domain() {

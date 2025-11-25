@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -39,6 +41,16 @@ public final class Validate {
     public static <A> boolean subset(Set<A> subset, Set<A> set) {
         return subset.stream()
             .allMatch(set::contains);
+    }
+
+    public static <A> boolean comparator(List<A> sorted, Comparator<A> comparator) {
+        for (int i = 0; i < sorted.size() - 1; i++) {
+            if (comparator.compare(sorted.get(i), sorted.get(i + 1)) > 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public static boolean matrix(int[][] entries) {
