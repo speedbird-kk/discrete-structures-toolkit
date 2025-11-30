@@ -1,17 +1,18 @@
 package util;
 
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import model.Matrix;
+import model.Relation;
 import model.Relational;
 
 public final class RelationUtilities {
     private RelationUtilities() {}
 
-    public static <A> Set<Pair<A, A>> reflexiveClosure(Set<Pair<A, A>> relationSet, Set<A> domain) {
+    public static <A> Set<Pair<A, A>> reflexiveClosure(Set<A> domain, Set<Pair<A, A>> relationSet) {
         Set<Pair<A, A>> out = new HashSet<>(relationSet);
 
         for (A x : domain) {
@@ -21,14 +22,22 @@ public final class RelationUtilities {
         return out;
     }
 
-    public static <A> Set<Pair<A, A>> transitiveClosure(Set<Pair<A, A>> relationSet, Set<A> domain) {
-        Matrix adj = adjacencyMatrix(relationSet, domain, domain);
+    public static <A> Set<Pair<A, A>> transitiveClosure(Set<A> domain, Set<Pair<A, A>> relationSet) {
+        Matrix adj = adjacencyMatrix(domain, domain, relationSet);
         Matrix adjClosed = MatrixUtilities.floydWarshall(adj);
 
-        return relationSetFromMatrix(adjClosed, domain, domain);
+        return relationSetFromMatrix(domain, domain, adjClosed);
     }
 
-    public static <A, B> Set<Pair<A, B>> relationSetFromMatrix(Matrix adj, Set<A> domain, Set<B> codomain) {
+    public static <A, B> Relation<B, A> inverse(Relational<A, B> relational) {
+        Set<Pair<B, A>> inverseRelationSet = relational.relationSet().stream()
+            .map(r -> new Pair<>(r.b(), r.a()))
+            .collect(Collectors.toSet());
+        
+        return new Relation<>(relational.codomain(), relational.domain(), inverseRelationSet);
+    }
+
+    public static <A, B> Set<Pair<A, B>> relationSetFromMatrix(Set<A> domain, Set<B> codomain, Matrix adj) {
         Set<Pair<A, B>> out = new HashSet<>();
         int[][] entries = adj.entries();
         List<A> domainList = Transform.toSortedListFromSet(domain);
@@ -45,7 +54,7 @@ public final class RelationUtilities {
         return out;
     }
 
-    public static <A, B> Matrix adjacencyMatrix(Set<Pair<A, B>> relationSet, Set<A> domain, Set<B> codomain) {
+    public static <A, B> Matrix adjacencyMatrix(Set<A> domain, Set<B> codomain, Set<Pair<A, B>> relationSet) {
         List<A> domainList = Transform.toSortedListFromSet(domain);
         List<B> codomainList = Transform.toSortedListFromSet(codomain);
         
@@ -69,6 +78,6 @@ public final class RelationUtilities {
     }
 
     public static <A, B> Matrix adjacencyMatrix(Relational<A, B> relational) {
-        return adjacencyMatrix(relational.relationSet(), relational.domain(), relational.codomain());
+        return adjacencyMatrix(relational.domain(), relational.codomain(), relational.relationSet());
     }
 }

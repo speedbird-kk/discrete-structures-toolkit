@@ -50,6 +50,17 @@ public final class Relation<A, B> implements Relational<A, B> {
         this.predicate = (a, b) -> relationSet.contains(new Pair<>(a, b));
     }
 
+    /**
+     * Construct a relation specifying the domain, codomain and the relation set.
+     */
+    public Relation(Set<A> domain, Set<B> codomain, Set<Pair<A, B>> relationSet) {
+        this.domain = Set.copyOf(domain);
+        this.codomain = Set.copyOf(codomain);
+        this.relationSet = Set.copyOf(relationSet);
+
+        this.predicate = (a, b) -> relationSet.contains(new Pair<>(a, b));
+    }
+
     public Set<A> domain() {
         return domain;
     }

@@ -85,9 +85,31 @@ public final class Sets {
             throw new InvalidChooseException("k must be between 0 and size of the set");
         }
 
-        return powerSet(set).stream()
-            .filter(subset -> subset.size() == k)
-            .collect(Collectors.toUnmodifiableSet());
+        List<A> list = new ArrayList<>(set);
+        Set<Set<A>> result = new HashSet<>();
+
+        chooseRecursive(list, 0, k, new ArrayList<>(), result);
+
+        return Set.copyOf(result);
+    }
+
+    private static <A> void chooseRecursive(
+        List<A> list, int index, int remaining, List<A> current, Set<Set<A>> result
+    ) {
+        if (remaining == 0) {
+            result.add(Set.copyOf(current));
+            return;
+        }
+
+        if (index == list.size()) {
+            return;
+        }
+
+        current.add(list.get(index));
+        chooseRecursive(list, index + 1, remaining - 1, current, result);
+        current.remove(current.size() - 1);
+
+        chooseRecursive(list, index + 1, remaining, current, result);
     }
 
     public static <A> Set<A> union(Set<A> A, Set<A> B) {

@@ -2,10 +2,9 @@ package main;
 
 import java.util.Set;
 
-import javax.swing.plaf.synth.SynthDesktopIconUI;
-
 import model.Relation;
 import util.RelationUtilities;
+import util.Sets;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,5 +15,8 @@ public class Main {
         System.out.println(r);
         System.out.println("\nadjacency matrix:\n");
         System.out.println(RelationUtilities.adjacencyMatrix(r));
+
+        Set<Integer> s = Sets.integers(1, 4);
+        System.out.println(Sets.choose(s, 2));
     }
 }

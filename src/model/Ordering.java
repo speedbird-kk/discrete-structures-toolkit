@@ -36,10 +36,9 @@ public final class Ordering<A> implements Relational<A, A> {
             .collect(Collectors.toSet())
         );
 
-        // Transitive closure to be added
         relationSet = Set.copyOf(
             RelationUtilities.reflexiveClosure(
-                RelationUtilities.transitiveClosure(coveringRelation, domain), domain
+                domain, RelationUtilities.transitiveClosure(domain, coveringRelation)
             )
         );
 
@@ -50,7 +49,7 @@ public final class Ordering<A> implements Relational<A, A> {
         this.domain = Set.copyOf(domain);
         this.comparator = Optional.of(comparator);
 
-        List<A> sorted = new ArrayList<>(domain)
+        List<A> sorted = new ArrayList<>(domain);
         sorted.sort(comparator);
 
         if (!Validate.comparator(sorted, comparator)) {
@@ -66,7 +65,15 @@ public final class Ordering<A> implements Relational<A, A> {
         coveringRelation = Set.copyOf(covers);
 
         relationSet = RelationUtilities.reflexiveClosure(
-            RelationUtilities.transitiveClosure(coveringRelation, this.domain), this.domain);
+            this.domain, RelationUtilities.transitiveClosure(this.domain, coveringRelation));
+    }
+
+    public Ordering(Set<Pair<A, A>> relationSet) {
+        // validate relationSet is an ordering
+        // infer domain
+        // construct coveringRelation
+
+        // make another constructor where domain is specified too
     }
 
     public static <A> Ordering<A> fromHasse(Map<A, Set<A>> hasse) {
