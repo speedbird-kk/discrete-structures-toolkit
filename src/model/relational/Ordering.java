@@ -1,4 +1,4 @@
-package model;
+package model.relational;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,8 +12,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import exceptions.InvalidComparatorException;
-import util.Pair;
-import util.RelationUtilities;
+import model.Pair;
+import model.Relational;
+import util.Relations;
 import util.Validate;
 
 public final class Ordering<A> implements Relational<A, A> {
@@ -37,8 +38,8 @@ public final class Ordering<A> implements Relational<A, A> {
         );
 
         relationSet = Set.copyOf(
-            RelationUtilities.reflexiveClosure(
-                domain, RelationUtilities.transitiveClosure(domain, coveringRelation)
+            Relations.reflexiveClosure(
+                domain, Relations.transitiveClosure(domain, coveringRelation)
             )
         );
 
@@ -64,8 +65,8 @@ public final class Ordering<A> implements Relational<A, A> {
 
         coveringRelation = Set.copyOf(covers);
 
-        relationSet = RelationUtilities.reflexiveClosure(
-            this.domain, RelationUtilities.transitiveClosure(this.domain, coveringRelation));
+        relationSet = Relations.reflexiveClosure(
+            this.domain, Relations.transitiveClosure(this.domain, coveringRelation));
     }
 
     public Ordering(Set<Pair<A, A>> relationSet) {

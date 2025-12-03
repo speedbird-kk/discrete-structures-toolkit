@@ -1,8 +1,8 @@
-package model;
+package model.relational;
 
 import java.util.Set;
 
-import util.Pair;
+import model.Pair;
 
 public sealed interface Relational<A, B> permits Mapping, Ordering, Relation {
     Set<A> domain();

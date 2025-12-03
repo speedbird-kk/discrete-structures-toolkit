@@ -1,4 +1,4 @@
-package model;
+package model.relational;
 
 import java.util.Map;
 import java.util.Objects;
@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 import exceptions.InvalidCodomainException;
 import exceptions.NotAMappingException;
 import exceptions.NotASubsetException;
-import util.Pair;
+import model.Pair;
+import model.Relation;
+import model.Relational;
 import util.Validate;
 
 public final class Mapping<A, B> implements Relational<A, B> {

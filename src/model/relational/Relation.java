@@ -1,10 +1,11 @@
-package model;
+package model.relational;
 
 import java.util.function.*;
 import java.util.stream.Collectors;
 
+import model.Pair;
+import model.Relational;
 import util.Cartesian;
-import util.Pair;
 
 import java.util.*;
 

@@ -6,11 +6,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import model.Matrix;
-import model.Relation;
-import model.Relational;
+import model.Pair;
+import model.relational.Relation;
+import model.relational.Relational;
 
-public final class RelationUtilities {
-    private RelationUtilities() {}
+public final class Relations {
+    private Relations() {}
 
     public static <A> Set<Pair<A, A>> reflexiveClosure(Set<A> domain, Set<Pair<A, A>> relationSet) {
         Set<Pair<A, A>> out = new HashSet<>(relationSet);
@@ -24,7 +25,7 @@ public final class RelationUtilities {
 
     public static <A> Set<Pair<A, A>> transitiveClosure(Set<A> domain, Set<Pair<A, A>> relationSet) {
         Matrix adj = adjacencyMatrix(domain, domain, relationSet);
-        Matrix adjClosed = MatrixUtilities.floydWarshall(adj);
+        Matrix adjClosed = Matrices.floydWarshall(adj);
 
         return relationSetFromMatrix(domain, domain, adjClosed);
     }
