@@ -57,8 +57,8 @@ public final class UGraph<A> implements Graph<A> {
     /**
      * Constructs a new simple undirected graph from a set of vertices and
      * undirected edges.
-     * @param vertices
-     * @param edges
+     * @param vertices the set of vertices in the undirected graph
+     * @param edges the set of undirected edges, {@code UEdge} objects, in the graph
      */
     public UGraph(Set<A> vertices, Set<UEdge<A>> edges) {
         this.vertices = Set.copyOf(vertices);
@@ -346,7 +346,7 @@ public final class UGraph<A> implements Graph<A> {
      * <p>Returns a new {@code UGraph} with the same set {@code vertices} and the set of edges
      * as {@code edges ∪ edge}, thus the set containing all edges in {@code edges} and the
      * specified {@code edge} to add.
-     * @param edge
+     * @param edge the edge to add to the new graph
      * @throws IllegalArgumentException if the specified {@code edge} is between vertices that are
      * not contained in the set {@code vertices}
      * @return the new {@code UGraph} with the specified {@code edge} added.
@@ -357,6 +357,68 @@ public final class UGraph<A> implements Graph<A> {
         }
 
         return new UGraph<>(vertices, Sets.union(edges, Set.of(edge)));
+    }
+
+    /**
+     * Returns a new {@code UGraph} with the specified vertex {@code v} removed.
+     * 
+     * <p>Returns a new {@code UGraph} with the set of vertices as {@code vertices - v}, thus
+     * all vertices in {@code vertices} except for the specified vertex {@code v} to remove
+     * and the set of edges as all the edges in {@code edges} except for those that have the
+     * vertex {@code v} as one of its ends.
+     * @param v the vertex to remove in the new graph
+     * @throws IllegalArgumentException if the specified vertex {@code v} is not contained in
+     * the set {@code vertices}
+     * @return the new {@code UGraph} with the specified vertex {@code v} removed
+     */
+    public UGraph<A> removeVertex(A v) {
+        if (!vertices.contains(v)) {
+            throw new IllegalArgumentException("Vertex to remove must be contained in the set of vertices");
+        }
+
+        Set<UEdge<A>> updatedEdges = edges.stream()
+            .filter(e -> !e.u().equals(v) && !e.v().equals(v))
+            .collect(Collectors.toSet());
+        
+        return new UGraph<>(Sets.difference(vertices, Set.of(v)), updatedEdges);
+    }
+
+    /**
+     * Returns a new {@code UGraph} with the specified vertex {@code w} added in such a way
+     * that it subdivides the specified {@code edge} into two new edges by placing the
+     * specified vertex {@code w} in between the end vertices of the specified {@code edge}.
+     * 
+     * <p>Specifically, if the specified {@code edge} has the end vertices {@code u} and {@code v},
+     * the new vertex {@code w} is placed so that the specified {@code edge} is replaced with
+     * two new edges, {@code {u, w}} and {@code {w, v}}. Then, returns a new {@code UGraph} with
+     * the set of vertices as {@code vertices ∪ w}, thus the set containing all vertices in {@code vertices}
+     * and the specified vertex {@code w} to add, and the set of edges as
+     * {@code (edges - edge) ∪ {{u, w}, {w, v}}}, hence the set {@code edges} with {@code edge} replaced
+     * by the edges {@code {u, w}} and {@code {w, v}}.
+     * @param w the vertex to add to the new graph
+     * @param edge the edge to subdivide in the new graph
+     * @return the new {@code UGraph} with the {@code edge} subdivided by the vertex {@code w}
+     */
+    public UGraph<A> subdivideEdge(A w, UEdge<A> edge) {
+        if (!edges.contains(edge)) {
+            throw new IllegalArgumentException("Edge must be contained in the set of edges");
+        }
+
+        if (vertices.contains(w)) {
+            throw new IllegalArgumentException(
+                "Vertex to add must not already be contained in the set of vertices");
+        }
+
+        return new UGraph<>(
+            Sets.union(vertices, Set.of(w)),
+            Sets.union(
+                Sets.difference(edges, Set.of(edge)),
+                Set.of(
+                    new UEdge<A>(edge.u(), w),
+                    new UEdge<A>(w, edge.v())
+                )
+            )
+        );
     }
 
     /**
