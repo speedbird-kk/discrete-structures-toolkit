@@ -2,8 +2,9 @@
 
 This library contains models and utilities for common mathematical discrete structures such as relations, mappings, orderings and graphs.
 
-**Documentation:** Coming soon
-**Download ZIP:** Coming soon
+**Documentation:** https://speedbird-kk.github.io/discrete-structures-toolkit
+
+**Download ZIP:** https://github.com/speedbird-kk/discrete-structures-toolkit/archive/refs/heads/main.zip
 
 **Please note the program is currently still under construction.**
 
