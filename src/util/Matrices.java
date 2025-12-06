@@ -3,8 +3,8 @@ package util;
 import exceptions.NotASquareMatrixException;
 import model.Matrix;
 
-public final class MatrixUtilities {
-    private MatrixUtilities() {}
+public final class Matrices {
+    private Matrices() {}
 
     public static Matrix floydWarshall(Matrix adj) {
         if (!Validate.squareMatrix(adj)) {

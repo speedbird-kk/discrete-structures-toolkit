@@ -1,13 +1,17 @@
 package util;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import model.Matrix;
-import model.Relation;
+import model.Pair;
+import model.graph.UEdge;
+import model.relational.Relation;
 
 public final class Validate {
     private Validate() {}
@@ -102,6 +106,12 @@ public final class Validate {
         }
 
         return true;
+    }
+
+    public static <A> boolean noDuplicatesInList(List<A> list) {
+        return list.size() == list.stream()
+            .distinct()
+            .count();
     }
 
     public static boolean matrix(int[][] entries) {

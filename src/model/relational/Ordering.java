@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 
 import exceptions.InvalidComparatorException;
 import model.Pair;
-import model.Relational;
 import util.Relations;
 import util.Validate;
 

@@ -2,7 +2,8 @@ package util;
 
 import java.util.Set;
 
-import model.Mapping;
+import model.Pair;
+import model.relational.Mapping;
 
 public final class Mappings {
     private Mappings() {}

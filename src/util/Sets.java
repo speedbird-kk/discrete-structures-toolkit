@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import exceptions.InvalidChooseException;
+import model.Pair;
 
 public final class Sets {
     private Sets() {}

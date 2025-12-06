@@ -10,8 +10,6 @@ import exceptions.InvalidCodomainException;
 import exceptions.NotAMappingException;
 import exceptions.NotASubsetException;
 import model.Pair;
-import model.Relation;
-import model.Relational;
 import util.Validate;
 
 public final class Mapping<A, B> implements Relational<A, B> {

@@ -2,6 +2,8 @@ package util;
 
 import java.util.*;
 
+import model.Pair;
+
 public final class Cartesian {
     private Cartesian() {}
 
